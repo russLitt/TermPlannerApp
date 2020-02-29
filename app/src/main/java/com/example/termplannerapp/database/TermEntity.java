@@ -12,24 +12,31 @@ public class TermEntity {
     private int id;
     private Date date;
     private String termTitle;
+    private String termStartDate;
+
+    public String getTermStartDate() {
+        return termStartDate;
+    }
 
     //for creating term and assigning values individually
     @Ignore
-    public TermEntity() {
+    public TermEntity(Date date, String trim) {
     }
 
     //for editing an existing term
-    public TermEntity(int id, Date date, String termTitle) {
+    public TermEntity(int id, Date date, String termTitle, String termStartDate) {
         this.id = id;
         this.date = date;
         this.termTitle = termTitle;
+        this.termStartDate = termStartDate;
     }
 
     //for creating new term and assigning id individually
     @Ignore
-    public TermEntity(Date date, String termTitle) {
+    public TermEntity(Date date, String termTitle, String termStartDate) {
         this.date = date;
         this.termTitle = termTitle;
+        this.termStartDate = termStartDate;
     }
 
     public int getId() {
@@ -56,6 +63,14 @@ public class TermEntity {
         this.termTitle = termTitle;
     }
 
+    public String getTermStartDate(String termStartDate) {
+        return this.termStartDate;
+    }
+
+    public void setTermStartDate(String termStartDate) {
+        this.termStartDate = termStartDate;
+    }
+
     //for debugging
     @Override
     public String toString() {
@@ -63,6 +78,8 @@ public class TermEntity {
                 "id=" + id +
                 ", date=" + date +
                 ", termTitle='" + termTitle + '\'' +
+                ", termStartDate'" + termStartDate +
                 '}';
     }
+
 }

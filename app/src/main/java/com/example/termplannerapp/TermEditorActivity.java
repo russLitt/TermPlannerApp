@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,9 @@ import com.example.termplannerapp.database.TermEntity;
 import com.example.termplannerapp.utilities.Constants;
 import com.example.termplannerapp.viewmodel.TermEditorViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,11 +29,15 @@ import static com.example.termplannerapp.utilities.Constants.TERM_ID_KEY;
 
 public class TermEditorActivity extends AppCompatActivity {
 
-    @BindView(R.id.term_text)
+    @BindView(R.id.term_text) EditText mTermText;
+    @BindView(R.id.term_start_date) EditText mTermStartDate;
     TextView mTextView;
 
     private TermEditorViewModel mViewModel;
+    //private EditText mTermStartDate;
     private boolean mNewTerm, mEditing;
+    private SimpleDateFormat dateFormat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +48,21 @@ public class TermEditorActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_check);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
             mEditing = savedInstanceState.getBoolean(EDITING_TERM_KEY);
         }
 
+        initDatePickers();
+
         initViewModel();
+    }
+
+    private void initDatePickers() {
+
     }
 
     private void initViewModel() {
@@ -53,6 +70,7 @@ public class TermEditorActivity extends AppCompatActivity {
         mViewModel.mLiveTerms.observe(this, (termEntity) -> {
             if (termEntity != null && !mEditing) {
                 mTextView.setText(termEntity.getTermTitle());
+                mTermStartDate.setText(termEntity.getTermStartDate());
             }
         });
 
@@ -94,7 +112,7 @@ public class TermEditorActivity extends AppCompatActivity {
     }
 
     private void saveAndReturn() {
-        mViewModel.saveNote(mTextView.getText().toString());
+        mViewModel.saveTerm(mTextView.getText().toString(), mTermStartDate.getText().toString());
         finish();
     }
 
